@@ -1,4 +1,4 @@
-package com.hgy.lexer;
+package com.hgy.common;
 
 public enum TokenType {
     KEYWORD,
