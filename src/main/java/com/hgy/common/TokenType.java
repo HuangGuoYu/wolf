@@ -1,7 +1,7 @@
 package com.hgy.common;
 
 public enum TokenType {
-    KEYWORD,
+    KEYWORDS,
     VARIABLE,
     OPERATOR,
     BRACKET,
