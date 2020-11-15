@@ -4,6 +4,8 @@ import com.hgy.common.CharacterTypeDetermine;
 import com.hgy.common.Keywords;
 import com.hgy.common.PeekIterator;
 import com.hgy.common.TokenType;
+import com.hgy.constant.CharConstant;
+import com.hgy.constant.OperatorConstant;
 import com.hgy.exception.LexicalException;
 
 import java.util.stream.Stream;
@@ -75,5 +77,91 @@ public class DFA {
             token = new Token(TokenType.VARIABLE, resValue);
         }
         return token;
+    }
+
+    /**
+     * 提取数字
+     */
+    public static Token buildNumber(PeekIterator<Character> codeIterator) {
+        int state = 0;
+        StringBuilder value = new StringBuilder();
+        while (codeIterator.hasNext()) {
+            char c = codeIterator.peek();
+            switch (state){
+                case 0:
+                    if (c == CharConstant.ZERO) {
+                        state = 1;
+                    } else if (CharacterTypeDetermine.isNumber(c)) {
+                        state = 2;
+                    } else if (c == OperatorConstant.PLUS || c == OperatorConstant.SUB) {
+                        state = 3;
+                    } else if (c == OperatorConstant.DOT) {
+                        state = 5;
+                    }
+                    break;
+                case 1:
+                    if (c == CharConstant.ZERO) {
+                        state = 1;
+                    } else if (c == OperatorConstant.DOT) {
+                        state = 4;
+                    } else if (CharacterTypeDetermine.isNumber(c)) {
+                        state = 2;
+                    } else {
+                        return new Token(TokenType.INTEGER, value.toString());
+                    }
+                    break;
+                case 2:
+                    if(CharacterTypeDetermine.isNumber(c)) {
+                        state = 2;
+                    } else if(c == OperatorConstant.DOT) {
+                        state = 4;
+                    } else {
+                        return new Token(TokenType.INTEGER, value.toString());
+                    }
+                    break;
+                case 3:
+                    if(CharacterTypeDetermine.isNumber(c)) {
+                        state = 2;
+                    } else if(c == OperatorConstant.DOT) {
+                        state = 5;
+                    } else {
+                        throw new LexicalException(c);
+                    }
+                    break;
+                case 4:
+                    if(c == OperatorConstant.DOT) {
+                        throw new LexicalException(c);
+                    }
+                    else if(CharacterTypeDetermine.isNumber(c)) {
+                        state = 6;
+                    }
+                    else {
+                        return new Token(TokenType.FLOAT, value.toString());
+                    }
+                    break;
+                case 5:
+                    if(CharacterTypeDetermine.isNumber(c)) {
+                        state = 6;
+                    }
+                    else {
+                        throw new LexicalException(c);
+                    }
+                    break;
+                case 6:
+                    if(CharacterTypeDetermine.isNumber(c)) {
+                        state = 6;
+                    }
+                    else if(c == OperatorConstant.DOT) {
+                        throw new LexicalException(c);
+                    }
+                    else {
+                        return new Token(TokenType.FLOAT, value.toString());
+                    }
+                    break;
+            }
+            // 真正得消耗掉流
+            value.append(codeIterator.next());
+        }
+        throw new LexicalException("不能正确提取数字Token");
     }
 }

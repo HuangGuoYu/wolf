@@ -34,4 +34,25 @@ public class TokenTests {
 
     }
 
+    @Test
+    public void test_makeNumber() {
+        String[] tests = {
+                "+0 aa",
+                "-1 aa",
+                "+.1 dd",
+                ".3 ccc",
+                "15.5555 ddd",
+                "0.8888 ooo",
+                "-12631.159 ",
+        };
+
+        for(String test:tests) {
+            PeekIterator<Character> it = new PeekIterator<>(test.chars().mapToObj(x -> (char) x));
+            Token token = DFA.buildNumber(it);
+            String[] splitValue = test.split(" ");
+            assertToken(token, splitValue[0],
+                    (test.indexOf('.') != -1) ? TokenType.FLOAT : TokenType.INTEGER);
+        }
+    }
+
 }
