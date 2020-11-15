@@ -27,17 +27,17 @@ public class Lexer {
                 continue;
             }
             // 删除注释
-            if(c == '/') {
-                if(lookahead == '/') {
+            if(c == CharConstant.SLASH) {
+                if(lookahead == CharConstant.SLASH) {
                     while(it.hasNext() && (c = it.next()) != CharConstant.ENTER) {};
                     continue;
                 }
-                else if(lookahead == '*') {
+                else if(lookahead == CharConstant.STAR) {
                     it.next();//多读一个* 避免/*/通过
                     boolean valid = false;
                     while(it.hasNext()) {
                         char p = it.next();
-                        if(p == '*' && it.peek() == '/') {
+                        if(p == CharConstant.STAR && it.peek() == CharConstant.SLASH) {
                             it.next();
                             valid = true;
                             break;
@@ -50,7 +50,10 @@ public class Lexer {
                 }
             }
             // 括号直接提取
-            if(c == '{' || c == '}' || c == '(' || c == ')') {
+            if(c == CharConstant.L_CURLY_BRACKET
+                    || c == CharConstant.R_CURLY_BRACKET
+                    || c == CharConstant.L_BRACKET
+                    || c == CharConstant.R_BRACKET) {
                 tokens.add(new Token(TokenType.BRACKET, String.valueOf(c)));
                 continue;
             }
