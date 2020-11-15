@@ -79,4 +79,19 @@ public class TokenTests {
         }
     }
 
+    @Test
+    public void test_makeString() {
+        String[] tests = {
+                "\"12345645fyudhwsfbasd\"",
+                "\'123dasdbhasdbhsad\'"
+        };
+
+        for(String test:tests) {
+            PeekIterator<Character> it = new PeekIterator<Character>(test.chars().mapToObj(x ->(char)x));
+            Token token = DFA.buildString(it);
+            assertToken(token, test, TokenType.STRING);
+        }
+
+    }
+
 }

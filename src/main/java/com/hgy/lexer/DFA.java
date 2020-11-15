@@ -165,7 +165,10 @@ public class DFA {
         throw new LexicalException("不能正确提取数字Token");
     }
 
-    public static Token buildOperator(PeekIterator<Character> it) throws LexicalException {
+    /**
+     * 提取操作符
+     */
+    public static Token buildOperator(PeekIterator<Character> it) {
         int state = 0;
 
         while(it.hasNext()) {
@@ -319,5 +322,47 @@ public class DFA {
 
         }
         throw new LexicalException("不能正常提取符号");
+    }
+
+    /**
+     * 提取字符串
+     */
+    public static Token buildString(PeekIterator<Character> it) {
+        StringBuilder value = new StringBuilder();
+        int state = 0;
+        while(it.hasNext()) {
+            char c = it.next();
+            switch (state) {
+                case 0:
+                    if(c == '\"') {
+                        state = 1;
+                    } else {
+                        state = 2;
+                    }
+                    value.append(c);
+                    break;
+                case 1:
+                    if(c == '"') {
+                        value.append(c);
+                        return new Token(TokenType.STRING, value.toString());
+                    }
+                    else {
+                        value.append(c);
+                    }
+                    break;
+                case 2:
+                    if(c == '\'') {
+                        value.append(c);
+                        return new Token(TokenType.STRING, value.toString());
+                    }
+                    else {
+                        value.append(c);
+                    }
+                    break;
+            }
+        }
+        throw new LexicalException("不能正常提取字符串");
+
+
     }
 }
