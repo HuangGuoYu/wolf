@@ -55,4 +55,28 @@ public class TokenTests {
         }
     }
 
+    @Test
+    public void test_makeOperator(){
+        String[] tests = {
+                "+ xxx",
+                "++mmm",
+                "/=g",
+                "==1",
+                "&=3982",
+                "&777",
+                "||xxx",
+                "^=111",
+                "%7"
+        };
+
+        String[] results = {"+", "++", "/=", "==", "&=", "&", "||", "^=", "%"};
+
+        int i = 0;
+        for(String test:tests) {
+            PeekIterator<Character> it = new PeekIterator<>(test.chars().mapToObj(x -> (char) x));
+            Token token = DFA.buildOperator(it);
+            assertToken(token, results[i++], TokenType.OPERATOR);
+        }
+    }
+
 }

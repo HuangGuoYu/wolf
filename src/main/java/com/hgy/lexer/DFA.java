@@ -164,4 +164,160 @@ public class DFA {
         }
         throw new LexicalException("不能正确提取数字Token");
     }
+
+    public static Token buildOperator(PeekIterator<Character> it) throws LexicalException {
+        int state = 0;
+
+        while(it.hasNext()) {
+            char c = it.next();
+
+            switch (state) {
+                case 0:
+                    switch (c) {
+                        case OperatorConstant.PLUS:
+                            state = 1;
+                            break;
+                        case OperatorConstant.SUB:
+                            state = 2;
+                            break;
+                        case OperatorConstant.MUL:
+                            state = 3;
+                            break;
+                        case OperatorConstant.DIV:
+                            state = 4;
+                            break;
+                        case OperatorConstant.GT:
+                            state = 5;
+                            break;
+                        case OperatorConstant.LT:
+                            state = 6;
+                            break;
+                        case OperatorConstant.EQ:
+                            state = 7;
+                            break;
+                        case OperatorConstant.OPPOSE:
+                            state = 8;
+                            break;
+                        case OperatorConstant.AND:
+                            state = 9;
+                            break;
+                        case OperatorConstant.OR:
+                            state = 10;
+                            break;
+                        case OperatorConstant.XOR:
+                            state = 11;
+                            break;
+                        case OperatorConstant.MOD:
+                            state = 12;
+                            break;
+                        case OperatorConstant.COMMA:
+                            return new Token(TokenType.OPERATOR, String.valueOf(OperatorConstant.COMMA));
+                        case OperatorConstant.SEMICOLON:
+                            return new Token(TokenType.OPERATOR,  String.valueOf(OperatorConstant.SEMICOLON));
+                    }
+                    break;
+                case 1:
+                    if(c == OperatorConstant.PLUS) {
+                        return new Token(TokenType.OPERATOR, "++");
+                    } else if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "+=");
+                    }else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "+");
+                    }
+                case 2:
+                    if(c == OperatorConstant.SUB) {
+                        return new Token(TokenType.OPERATOR, "--");
+                    } else if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "-=");
+                    }else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "-");
+                    }
+                case 3:
+                    if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "*=");
+                    }else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "*");
+                    }
+                case 4:
+                    if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "/=");
+                    }else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "/");
+                    }
+                case 5:
+                    if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, ">=");
+                    }else if(c== OperatorConstant.GT) {
+                        return new Token(TokenType.OPERATOR, ">>");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, ">");
+
+                    }
+                case 6:
+                    if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "<=");
+                    }else if(c== OperatorConstant.LT) {
+                        return new Token(TokenType.OPERATOR, "<<");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "<");
+                    }
+                case 7:
+                    if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "==");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "=");
+                    }
+                case 8:
+                    if(c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "!=");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "!");
+                    }
+                case 9:
+                    if(c == OperatorConstant.AND) {
+                        return new Token(TokenType.OPERATOR, "&&");
+                    }  else if (c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "&=");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "&");
+                    }
+                case 10:
+                    if(c == OperatorConstant.OR) {
+                        return new Token(TokenType.OPERATOR, "||");
+                    }  else if (c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "|=");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "|");
+                    }
+                case 11:
+                    if(c == OperatorConstant.XOR) {
+                        return new Token(TokenType.OPERATOR, "^^");
+                    }  else if (c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "^=");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "^");
+                    }
+                case 12:
+                    if (c == OperatorConstant.EQ) {
+                        return new Token(TokenType.OPERATOR, "%=");
+                    } else {
+                        it.putBack();
+                        return new Token(TokenType.OPERATOR, "%");
+                    }
+            }
+
+        }
+        throw new LexicalException("不能正常提取符号");
+    }
 }
