@@ -69,6 +69,20 @@ public class PeekIterator<T> implements Iterator<T> {
     }
 
 
+    /**
+     * 调用后在使用peek即可查看是上一个被next过的元素
+     * 如：当前流： A -> B -> C
+     * next: A
+     * slideWindowQueue: A
+     * next: B
+     * slideWindowQueue: B A  (A是队首)
+     * putBack => stackPutBacks: B
+     * peek: B
+     * putBack => stackPutBacks: A B (A是栈顶)
+     * peek: A
+     * next: A  stackPutBacks: B
+     * next: B  stackPutBacks:
+     */
     public void putBack(){
         // 存储刚刚next的元素，下一次next先从stackPutBacks处获取
         if(this.slideWindowQueue.size() > 0) {

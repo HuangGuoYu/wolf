@@ -34,6 +34,7 @@ public class PeekIteratorTests {
         it.putBack();
         it.putBack();
         assertEquals('b', it.next());
+        assertEquals('c', it.next());
     }
 
     @Test
