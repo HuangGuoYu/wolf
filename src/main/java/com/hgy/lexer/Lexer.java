@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * 完整词法分析器
+ * 当前的便利主要确定字符是哪一个类型
+ */
 public class Lexer {
 
     public List<Token> analyse(PeekIterator<Character> it) {
@@ -57,23 +61,26 @@ public class Lexer {
                 tokens.add(new Token(TokenType.BRACKET, String.valueOf(c)));
                 continue;
             }
-            if(c == '"' || c == '\'') {
+            //字符串提取
+            if(c == CharConstant.DOUBLE_QUOTATION_MARKS || c == CharConstant.SINGLE_QUOTATION_MARKS) {
                 it.putBack();
                 tokens.add(DFA.buildString(it));
                 continue;
             }
+            //标识符或关键字或bool值提取
             if(CharacterTypeDetermine.isLetter(c)) {
                 it.putBack();
                 tokens.add(DFA.buildVarOrKeywords(it));
                 continue;
             }
+            //数字提取
             if(CharacterTypeDetermine.isNumber(c)) {
                 it.putBack();
                 tokens.add(DFA.buildNumber(it));
                 continue;
             }
 
-
+            //数字提取
             if((c == OperatorConstant.PLUS
                     || c == OperatorConstant.SUB
                     || c == OperatorConstant.DOT)
@@ -86,7 +93,7 @@ public class Lexer {
                     continue;
                 }
             }
-
+            //操作符提取
             if(CharacterTypeDetermine.isOperator(c)) {
                 it.putBack();
                 tokens.add(DFA.buildOperator(it));

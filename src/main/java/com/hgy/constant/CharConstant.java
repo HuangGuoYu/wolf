@@ -10,5 +10,7 @@ public class CharConstant {
     public static final char R_CURLY_BRACKET = '}';
     public static final char L_BRACKET  = '(';
     public static final char R_BRACKET = ')';
+    public static final char SINGLE_QUOTATION_MARKS = '\'';
+    public static final char DOUBLE_QUOTATION_MARKS = '\"';
 
 }

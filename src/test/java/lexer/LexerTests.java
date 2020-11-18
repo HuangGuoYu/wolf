@@ -95,7 +95,7 @@ public class LexerTests {
 
     @Test
     public void test_deleteOneLine() throws LexicalException {
-        String source = "//121212\na=1";
+        String source = "//121212\na0=\'2\'";
         Lexer lexer = new Lexer();
         List tokens = lexer.analyse(source.chars().mapToObj(x -> (char)x));
         assertEquals(3, tokens.size());
