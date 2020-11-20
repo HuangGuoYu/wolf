@@ -7,6 +7,8 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Data
 public abstract class GrammerNode {
 
@@ -38,5 +40,16 @@ public abstract class GrammerNode {
     public void addChild(GrammerNode node) {
         node.parent = this;
         children.add(node);
+    }
+
+    public void print(int indent) {
+        if(indent == 0) {
+            System.out.println("print:" + this);
+        }
+
+        System.out.println(StringUtils.leftPad(" ", indent *2) + label);
+        for(GrammerNode child : children) {
+            child.print(indent + 1);
+        }
     }
 }

@@ -5,4 +5,8 @@ public enum GrammerNodeTypes {
     UNARY_EXPR, // ++i
     VARIABLE,
     SCALAR, // 1.0, true
+    DECLARE_STMT, // var name = expr | Factor
+    ASSIGN_STMT,//赋值语句
+    BLOCK_STMT, //语句块儿
+    IF_STMT,//IF 语句
 }
