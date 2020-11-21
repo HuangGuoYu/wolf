@@ -29,6 +29,14 @@ public abstract class Stmtment extends GrammerNode {
             return DeclareStmtment.parse(it);
         } else if (peek.isVariable() && lookahead != null && "=".equals(lookahead.getValue())) {
             return AssignStmt.parse(it);
+        } else if (peek.getValue().equals("return")) {
+            return ReturnStmt.parse(it);
+        }else if(peek.getValue().equals("if")) {
+            return IFStmt.parse(it);
+        } else if(peek.getValue().equals("func")) {
+            return FunctionStmt.parse( it);
+        } else if(peek.getValue().equals("while")) {
+            return WhileStmt.parse( it);
         }
         return null;
     }
